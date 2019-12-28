@@ -38,11 +38,22 @@ if [ -x "$(command -v brew)" ]; then
 	brew cleanup
 fi
 
+print_header "🐍 Python, PIP and packages"
+if [ -x "$(command -v brew)" ]; then
+  brew upgrade python
+  brew upgrade python3
+fi
+
 if [ -x "$(command -v pip)" ]; then
-	print_header "🐍 Python, PIP and packages"
 	pip install --upgrade pip setuptools
 	printf "\n"
 	pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+fi
+
+if [ -x "$(command -v pip3)" ]; then
+	pip3 install --upgrade pip setuptools
+	printf "\n"
+	pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
 fi
 
 if [ -x "$(command -v npm)" ]; then
@@ -61,6 +72,15 @@ print_header "💡 Versions:" "\n"
 if [ -x "$(command -v python)" ]; then
 	printf "Python: "
 	python --version
+	printf "PIP: "
+	pip -V
+fi
+
+if [ -x "$(command -v python3)" ]; then
+	printf "Python 3: "
+	python3 --version
+	printf "PIP 3: "
+	pip3 -V
 fi
 
 if [ -x "$(command -v javac)" ]; then
